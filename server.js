@@ -38,7 +38,13 @@ app.get('/hello', (req, res) => res.send('hello world'));
 
 app.post('/upload', upload.single('image'), (req, res, next) => {
   console.log('got upload!')
-  res.send('ok');
+  // save file logic
+
+  // some file name
+  res.send(req.files);
+  
+  //save with file name
+  //return it as response body
   next();
 })
 

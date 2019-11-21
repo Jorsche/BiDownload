@@ -1,16 +1,19 @@
 import React,{useState} from 'react';
 import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
+
 const Upload=()=>{
- 
+let urlDownload;
 let [fileState, setFileState] = useState();
+let urlDataName;
+
 
  const handleFile=(e)=> {
      fileState= e.target.files[0];
      setFileState(fileState);
      
-     console.log(e.target.files, "$$$$");
-     console.log(e.target.files[0], "$$$$");
+     //console.log(e.target.files, "$$$$");
+    // console.log(e.target.files[0], "$$$$");
  };
 
  const handleUpload=(e)=>{
@@ -24,20 +27,32 @@ let [fileState, setFileState] = useState();
     console.log("das"+formdata);
  axios({
     url:`http://localhost:8000/upload`,
-    // url:`http://localhost:8000/upload`,
     method: "POST",
-    // headers:{
-    //     authorization: `your token`
-    // },
-    // headers: {
-    //     'Content-Type': 'multipart/form-data'
-    //   },
     data: formdata
     }).then((res)=>{
+       console.log(res);
+       console.log("abc",'http://localhost:3001/'+res.data.filename);
+
+       urlDataName= res.data.filename;
+       console.log("urlDataName", urlDataName);
+
+      //  urlDownload=(urlDataName)=>{
+      //    let link= "<a href='http://localhost:3001/"+urlDataName+"' download></a>"
+      //    console.log("link",link);
+      //             return(
+      //                   <div>
+      //                      {console.log("in return")}
+      //                      {link}
+      //                   </div>
+      //             );}
+     
  });
 
 
- }
+
+ 
+
+}
  return(
 <div>
 <h1>The form</h1>
@@ -46,7 +61,6 @@ let [fileState, setFileState] = useState();
 <label>Select file</label>
 <input type="file" name="file" onChange={(e)=>{handleFile(e)}}/>
 </div>
-
 <button type="button" onClick={(e)=>{handleUpload(e)}}>Upload</button>
 </form>
 </div>
