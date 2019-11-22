@@ -2,16 +2,15 @@ import React,{useState} from 'react';
 import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Upload=()=>{
-let urlDownload;
-let [fileState, setFileState] = useState();
-let urlDataName;
 
+const Upload=()=>{
+let [fileState, setFileState] = useState();
+let [urlState, seturlState]= useState();
+let urlDataName;
 
  const handleFile=(e)=> {
      fileState= e.target.files[0];
      setFileState(fileState);
-     
      //console.log(e.target.files, "$$$$");
     // console.log(e.target.files[0], "$$$$");
  };
@@ -32,27 +31,21 @@ let urlDataName;
     }).then((res)=>{
        console.log(res);
        console.log("abc",'http://localhost:3001/'+res.data.filename);
-
        urlDataName= res.data.filename;
-       console.log("urlDataName", urlDataName);
-
-      //  urlDownload=(urlDataName)=>{
-      //    let link= "<a href='http://localhost:3001/"+urlDataName+"' download></a>"
-      //    console.log("link",link);
-      //             return(
-      //                   <div>
-      //                      {console.log("in return")}
-      //                      {link}
-      //                   </div>
-      //             );}
-     
- });
-
-
-
- 
-
+    }).finally(()=>{
+      seturlState(urlDataName);
+       });
 }
+ const urlDownload=()=>{
+      let urllink= "http://localhost:3001/"+urlState;
+    let link=<a href={urllink}>DOWNLOAD</a>
+      return(
+                  <div>
+                     {link}
+                  </div>
+            );
+         };
+
  return(
 <div>
 <h1>The form</h1>
@@ -61,8 +54,10 @@ let urlDataName;
 <label>Select file</label>
 <input type="file" name="file" onChange={(e)=>{handleFile(e)}}/>
 </div>
+{console.log("urlDataState", urlState)}
 <button type="button" onClick={(e)=>{handleUpload(e)}}>Upload</button>
 </form>
+{urlDownload()}
 </div>
 );
 }
